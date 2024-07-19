@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Comment System</h1>
+    <form action="/add_comment" method="POST">
+        <input type="hidden" name="parent_id" value="None">
+        <label for="user">User:</label>
+        <input type="text" id="user" name="user" required>
+        <label for="content">Comment:</label>
+        <textarea id="content" name="content" required></textarea>
+        <button type="submit">Add Comment</button>
+    </form>
+    <hr>
+    <div id="comments">
+        {% from "macros.html" import render_comment %}
+        {% for comment in comments.values() %}
+            {{ render_comment(comment) }}
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% macro render_comment(comment) %}
+<div class="comment">
+    <p><strong>{{ comment['user'] }}</strong>: {{ comment['content'] }}</p>
+    <form action="/edit_comment" method="POST">
+        <input type="hidden" name="comment_id" value="{{ comment['id'] }}">
+        <textarea name="new_content" required>{{ comment['content'] }}</textarea>
+        <button type="submit">Edit</button>
+    </form>
+    <form action="/delete_comment" method="POST">
+        <input type="hidden" name="comment_id" value="{{ comment['id'] }}">
+        <button type="submit">Delete</button>
+    </form>
+    <form action="/add_comment" method="POST">
+        <input type="hidden" name="parent_id" value="{{ comment['id'] }}">
+        <label for="user">User:</label>
+        <input type="text" name="user" required>
+        <label for="content">Reply:</label>
+        <textarea name="content" required></textarea>
+        <button type="submit">Reply</button>
+    </form>
+    {% if comment['replies'] %}
+        <div class="replies">
+            {% for reply in comment['replies'].values() %}
+                {{ render_comment(reply) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endmacro %}
